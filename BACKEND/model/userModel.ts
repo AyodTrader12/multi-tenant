@@ -1,39 +1,60 @@
-import { model, Schema, Document } from "mongoose";
+import { Document, model, Schema, Types } from "mongoose";
 
 interface iUser {
   userName: string;
   email: string;
   password: string;
+  avatar: string;
   avatarID: string;
-  friends: [];
-  posts: [];
+  friends: Array<string>;
+  following: Array<string>;
+  follower: Array<string>;
+  posts: Array<{}>;
 }
 
-interface iUSerData extends iUser, Document {}
+interface iUserData extends iUser, Document {}
 
-const userModel = new Schema<iUSerData>(
+const userModel = new Schema<iUserData>(
   {
     userName: {
       type: String,
     },
     email: {
       type: String,
-      unique: true,
     },
     password: {
+      type: String,
+    },
+    avatar: {
       type: String,
     },
     avatarID: {
       type: String,
     },
-    friends: {
-      type: [],
-    },
-    posts: {
-      type: [],
-    },
+    friends: [
+      {
+        type: String,
+      },
+    ],
+    following: [
+      {
+        type: String,
+      },
+    ],
+    follower: [
+      {
+        type: String,
+      },
+    ],
+
+    posts: [
+      {
+        type: Types.ObjectId,
+        ref: "posts",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-export default model<iUSerData>("users", userModel);
+export default model<iUserData>("users", userModel);
